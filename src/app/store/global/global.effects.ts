@@ -43,7 +43,7 @@ export class GlobalEffects {
       const score = localStorage.getItem('SCORE');
       const bestScore = localStorage.getItem('BEST_SCORE')
       if (!bestScore && score) {
-        localStorage.setItem('BEST_SCORE', score);
+        localStorage.setItem('BEST_SCORE', `${score}`);
         this.store.dispatch(new SetBestScore(score))
         return new Observable<any>();
       }
