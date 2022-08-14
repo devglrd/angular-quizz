@@ -1,4 +1,59 @@
+<div class="container mx-auto" *ngIf="!loading">
+  <ng-container *ngIf="quizz?.state == 'START'">
+    <span class="h2-semibold">{{ question?.label}}</span>
+    <div class="questions grid grid-rows-2 grid-cols-2 gap-6" [formGroup]="form"
+         *ngIf="question?.answerType ==='choice'">
+      <div formArrayName="choices" class="question" *ngFor="let choice of choices.controls; let i=index">
+        <div [formGroupName]="i" class="flex items-center justify-between">
+          <span>{{ question.choices[i] }}</span>
+          <input type="radio" name="choice" [value]="choice" (change)="assign(choice)">
+        </div>
+      </div>
+    </div>
 
-<h1>
-  Quizz
-</h1>
+    <div class="questions grid grid-rows-2 grid-cols-2 gap-6" [formGroup]="form"
+         *ngIf="question?.answerType ==='multiple-choice'">
+      <div formArrayName="choices" class="question" *ngFor="let choice of choices.controls; let i=index">
+        <div [formGroupName]="i" class="flex items-center justify-between">
+          <span>{{ question.choices[i] }}</span>
+          <input type="checkbox" name="choice" [value]="choice" (change)="assign(choice)">
+        </div>
+      </div>
+    </div>
+
+
+    <div class="questions relative" *ngIf="question?.answerType ==='text'" [formGroup]="form">
+      <label for="input" class="label-input">Votre réponse</label>
+      <input type="text" id="input" placeholder="Votre réponse" formControlName="text">
+    </div>
+    <div class="w-full flex justify-center items-center mt-20">
+      <app-button text="valider" (clicked)="validate()"></app-button>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="quizz?.state == 'RESULTS'">
+    <div class="container flex">
+      <div class="flex flex-col justify-start items-center w-1/2">
+        <img src="./assets/icons/sucess.svg" alt="" height="34px" width="24px">
+        <span class="h2-semibold mt-4">Le Quizz est terminé ! </span>
+        <div class="score"><span>{{ quizz.score}}/{{quizz.total}}</span> <span> réponses justes</span></div>
+        <span class="info">Meilleur score : {{ bestScore }}/{{ quizz.total}} <span
+          class="ml-3 badge" *ngIf="isNewBestScore">New!</span></span>
+      </div>
+      <div class="flex flex-col justify-start items-start w-1/2 mt-10">
+        <span class="h3-semibold mb-5">Détail des résultats : </span>
+        <div class="questions-results">
+          <div class="results" *ngFor="let q of history">
+            <span class="flex items-center">
+              {{ q.question}} :
+              <img class="ml-5" height="15px" width="15px"
+                   [src]="q.right ? './assets/icons/right.svg' : './assets/icons/false.svg'" alt="">
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+<ng-container *ngIf="loading">
+  <app-loader></app-loader>
+</ng-container>

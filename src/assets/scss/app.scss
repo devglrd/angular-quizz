@@ -1,5 +1,248 @@
 @import "fonts/fonts";
-@import "loader.scss";
+@import "loader";
+@import "variables";
+
+.header {
+  background: $header;
+  padding: 16px 24px;
+
+  &.default-height {
+    height: 79px;
+  }
+
+  .question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .info {
+      background: $white;
+      border-radius: 8px;
+      padding: 8px;
+    }
+  }
+}
+
+.questions-results {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  span {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    padding-left: 20px;
+    margin-bottom: 24px;
+    color: $primary;
+  }
+
+}
+
+.quizz-wrapper {
+  padding-top: 100px;
+
+  .questions {
+    margin-top: 100px;
+
+    .question {
+      background: $info;
+      border-radius: 8px;
+      padding: 20px 16px;
+
+      span {
+        font-family: 'Inter', sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 18px;
+        margin-right: 32px;
+
+        color: $primary;
+      }
+    }
+  }
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+
+  font: inherit;
+  color: $input-border;
+  width: 24px;
+  height: 24px;
+  border: 0.15em solid $input-border;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: $input-border;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: $input-border;
+  width: 24px;
+  height: 24px;
+  border: 0.15em solid $input-border;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 15px;
+  height: 15px;
+  background: $input-border;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--form-control-color);
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+.label-input {
+  background: $white;
+  position: absolute;
+  top: -5px;
+  left: 10px;
+  padding: 0px 10px;
+  //left: 85px;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 130%;
+  /* or 14px */
+
+  display: flex;
+  align-items: center;
+
+  color: $grey;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 24px;
+  margin-bottom: 31px;
+
+  span {
+    &:first-child {
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-weight: 900;
+      font-size: 83px;
+      line-height: 108px;
+      text-align: center;
+      color: $btn-background;
+    }
+
+    &:last-child {
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-weight: 900;
+      font-size: 30px;
+      text-align: center;
+      color: $btn-background;
+    }
+
+  }
+}
+
+.badge {
+  background: #E6F5F5;
+  border-radius: 8px;
+  padding: 6px 19px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  /* identical to box height, or 143% */
+
+  letter-spacing: 0.1px;
+
+  /* green/100 */
+
+  color: #54BDB8;
+}
+
+.info {
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  color: $primary;
+
+}
+
+input[type="text"] {
+
+  width: 100%;
+  margin: 0 auto;
+  background: transparent;
+  border: 1px solid #C3CCDA;
+  border-radius: 4px;
+  padding: 17px 12px;
+  font-family: 'Inter', sans-serif;
+
+  &::placeholder {
+    appearance: none;
+    display: none;
+    color: transparent;
+  }
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 130%;
+  /* or 14px */
+
+  display: flex;
+  align-items: center;
+
+  /* grey/100 */
+
+  color: $grey;
+}
+
 
 .home-wrapper {
   position: relative;
@@ -39,7 +282,7 @@
   font-weight: 700;
   font-size: 16px;
   line-height: 21px;
-  color: #16175F;
+  color: $primary;
 }
 
 .h2-semibold {
@@ -54,7 +297,7 @@
 
   /* text/100 */
 
-  color: #16175F;
+  color: $primary;
 
 }
 
@@ -64,7 +307,7 @@
   font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: #16175F;
+  color: $primary;
 }
 
 .h1 {
@@ -74,7 +317,7 @@
   font-weight: 600;
   font-size: 32px;
   line-height: 42px;
-  color: #16175F;
+  color: $primary;
 }
 
 .btn-default {
@@ -84,7 +327,7 @@
   align-items: center;
   padding: 8px 22px;
 
-  background: #3C50E0;
+  background: $btn-background;
   /* Elevation/2 */
 
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px rgba(0, 0, 0, 0.14), 0px 1px 5px rgba(0, 0, 0, 0.12);
@@ -100,7 +343,7 @@
   letter-spacing: 0.46px;
   text-transform: uppercase;
 
-  color: #FFFFFF;
+  color: $white;
 
   &.disabled {
     box-shadow: none;
@@ -121,8 +364,8 @@
     @media screen and (max-width: 949px) {
       width: 90%;
     }
-    background: #FFFFFF;
-    box-shadow: 0px 4px 44px rgba(22, 23, 95, 0.2);
+    background: $white;
+    box-shadow: 0px 4px 44px $shadow;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -140,7 +383,7 @@
 .best-score {
   .card {
     border-radius: 8px 8px 0px 0px;
-    background: white;
+    background: $white;
     display: flex;
     flex-direction: column;
     align-items: center;

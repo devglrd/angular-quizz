@@ -1,3 +1,13 @@
+<div class="header" [class.default-height]="quizz?.state === 'RESULTS'">
+  <div class="question">
+    <div class="info" *ngIf="quizz?.state ==='START'">
+      <span class="h2-semibold">Question {{ quizz.current + 1}}/{{ quizz.total}}</span>
+    </div>
+    <div class="info" *ngIf="quizz?.state ==='START'">
+      <span class="timer">{{timer}}</span>
+    </div>
+  </div>
+</div>
 <div class="quizz-wrapper">
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

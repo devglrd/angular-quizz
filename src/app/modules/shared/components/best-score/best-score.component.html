@@ -1,10 +1,10 @@
 <div class="best-score">
-  <div class="flex w-full justify-center">
+  <div class="flex w-full justify-center" *ngIf="loading">
     <app-loader></app-loader>
   </div>
-  <div class="card ">
+  <div class="card " >
     <img src="./assets/icons/trophee.svg" alt="">
     <h4 class="h4-bold label-score">Meilleur score</h4>
-    <span class="h2-semibold ">9/10</span>
+    <span class="h2-semibold " >{{ score }}/10</span>
   </div>
 </div>

@@ -4,6 +4,8 @@ import {QuizzRouting} from "./routing/quizz.routing";
 import {COMPONENTS} from "./components";
 import {SERVICES} from "./services";
 import {SharedModule} from "../shared/shared.module";
+import {HttpClientModule} from "@angular/common/http";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -12,7 +14,10 @@ import {SharedModule} from "../shared/shared.module";
   ],
   imports: [
     CommonModule,
+    HttpClientModule,
     QuizzRouting,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule,
   ],
   providers: [

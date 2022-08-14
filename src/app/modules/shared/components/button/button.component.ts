@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -11,6 +11,7 @@ export class ButtonComponent implements OnInit {
   @Input() link: string = '';
   @Input() disabled: boolean = false;
 
+  @Output() clicked: EventEmitter<any> = new EventEmitter<any>()
   constructor(private router: Router) {
   }
 
@@ -18,6 +19,6 @@ export class ButtonComponent implements OnInit {
   }
 
   goTo() {
-    return this.router.navigateByUrl(this.link)
+    return this.clicked.emit();
   }
 }

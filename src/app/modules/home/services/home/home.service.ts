@@ -6,8 +6,5 @@ import { Injectable } from '@angular/core';
 export class HomeService {
 
   constructor() { }
-  getBestScore(){
-    return localStorage.getItem('BEST_SCORE')
-  }
 
 }
