@@ -3,13 +3,13 @@ import * as QuizzActions from './quizz.actions';
 import {IAnswer, IQuestion} from "./type";
 
 export const initialState: IState = {
+  error: null,
   isLoading: false,
-  questions: [],
-  answers: [],
   newBestScore: false,
   current: 0,
-  error: null,
   score: 0,
+  questions: [],
+  answers: [],
 }
 
 export const quizzReducer = createReducer(initialState,
@@ -17,6 +17,7 @@ export const quizzReducer = createReducer(initialState,
   on(QuizzActions.getQuizzCompleted, (state, action) => ({
     ...state,
     isLoading: false,
+    newBestScore: false,
     questions: action.questions,
     answers: [],
     current: 0
