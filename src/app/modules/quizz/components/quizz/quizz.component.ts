@@ -42,7 +42,8 @@ export class QuizzComponent implements OnInit, OnDestroy {
       this.current$,
       this.total$
     ]).subscribe(([current, total]) => {
-      if (current > total) {
+      if (total && current > total) {
+        this.router.navigateByUrl('/results')
         this.store.dispatch(QuizzActions.endQuizz())
       }
     })

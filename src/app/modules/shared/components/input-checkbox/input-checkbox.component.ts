@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AbstractControl} from "@angular/forms";
 
 @Component({
   selector: 'app-input-checkbox',
@@ -6,9 +7,9 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./input-checkbox.component.scss']
 })
 export class InputCheckboxComponent implements OnInit {
-  @Input() label = '';
+  @Input() label: string = '';
   @Input() index: number = 0;
-  @Input() value: any;
+  @Input() value: AbstractControl<any, any> | undefined;
   @Output() assign: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {

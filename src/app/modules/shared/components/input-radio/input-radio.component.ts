@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AbstractControl} from "@angular/forms";
 
 @Component({
   selector: 'app-input-radio',
@@ -6,8 +7,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
   styleUrls: ['./input-radio.component.scss']
 })
 export class InputRadioComponent implements OnInit {
-  @Input() label = '';
-  @Input() value: any;
+  @Input() label: string = '';
+  @Input() value: AbstractControl<any, any> | undefined;
   @Output() assign: EventEmitter<any> = new EventEmitter<any>()
 
   constructor() {
