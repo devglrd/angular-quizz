@@ -6,6 +6,10 @@ import {SERVICES} from "./services";
 import {SharedModule} from "../shared/shared.module";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {StoreModule} from "@ngrx/store";
+import {quizzReducer} from "../../store/quizz/quizz.reducer";
+import {EffectsModule} from "@ngrx/effects";
+import {QuizzEffects} from "../../store/quizz/quizz.effects";
 
 
 @NgModule({
@@ -19,6 +23,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
+    StoreModule.forFeature('quizz', quizzReducer),
+    EffectsModule.forFeature([QuizzEffects])
   ],
   providers: [
     ...SERVICES

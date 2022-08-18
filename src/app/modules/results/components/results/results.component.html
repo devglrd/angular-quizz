@@ -1,0 +1,29 @@
+<div class="container flex" *ngIf="!emptyQuizz">
+  <div class="flex flex-col justify-start items-center w-1/2">
+    <img src="./assets/icons/sucess.svg" alt="" height="34px" width="24px">
+    <span class="h2-semibold mt-4">Le Quizz est terminé ! </span>
+    <div class="score"><span>{{ score$ | async}}/{{total$| async}}</span> <span> réponses justes</span></div>
+        <span class="info">Meilleur score : {{ bestScore }}/{{ total$ | async}} <span
+          class="ml-3 badge" *ngIf="isNewBestScore$ | async">New!</span></span>
+  </div>
+  <div class="flex flex-col justify-start items-start w-1/2 mt-10">
+    <span class="h3-semibold mb-5">Détail des résultats : </span>
+    <div class="questions-results">
+      <div class="results" *ngFor="let q of history$ | async">
+                  <span class="flex items-center">
+                    {{ q.label}} :
+                    <img class="ml-5" height="15px" width="15px"
+                         [src]="q.valid ? './assets/icons/right.svg' : './assets/icons/false.svg'" alt="">
+                  </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="flex w-full" *ngIf="emptyQuizz">
+  <div class="flex flex-col justify-center items-center w-full">
+    <img src="./assets/icons/sucess.svg" alt="" height="34px" width="24px">
+    <span class="h2-semibold mt-4">Vous n'avez répondu à aucune question </span>
+    <app-button text="Demarrer le quizz" class="mt-10" routerLink="./../quizz"></app-button>
+  </div>
+</div>

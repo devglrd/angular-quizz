@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
-import {Subject, takeUntil} from "rxjs";
+import {select, Store} from "@ngrx/store";
+import {Observable, Subject, takeUntil} from "rxjs";
 import {IAppState} from "../../../../store/reducer";
-import {SetBestScore} from "../../../../store/global/global.actions";
 import {Router} from "@angular/router";
+import * as HomeActions from '../../../../store/home/home.actions'
+import {getError, getLoading} from "../../../../store/home/home.selectors";
 
 @Component({
   selector: 'app-home',
@@ -12,18 +13,17 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  public loading = true;
+  public loading$: Observable<any>;
+  public error$: Observable<string | null>;
   private destroy$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private store: Store<IAppState>, private router:Router) {
+  constructor(private store: Store<IAppState>, private router: Router) {
+    this.loading$ = this.store.pipe(select(getLoading()))
+    this.error$ = this.store.pipe(select(getError()))
   }
 
   ngOnInit(): void {
-    this.store.select('global').pipe(takeUntil(this.destroy$)).subscribe((data) => {
-      setTimeout(() => {
-        this.loading = false;
-      }, 500)
-    })
+    this.store.dispatch(HomeActions.getScore());
   }
 
   ngOnDestroy(): void {
@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   click() {
-    this.router.navigate([ 'quizz'])
+    this.router.navigate(['quizz'])
   }
 }
 

@@ -1,10 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
-import {Subject, takeUntil} from "rxjs";
-import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {AddScore, EndQuizz, NextQuestion} from "../../../../store/global/global.actions";
-import {QuizzService} from "../../services";
+import {combineLatest, Observable, Subject} from "rxjs";
+import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {getCurrent, getCurrentQuestion, getLoading, numberQuestion} from "../../../../store/quizz/quizz.selectors";
+import {AnswerEnum, IQuestion} from "../../../../store/quizz/quizz.reducer";
+import * as QuizzActions from '../../../../store/quizz/quizz.actions'
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-quizz',
@@ -12,47 +14,52 @@ import {QuizzService} from "../../services";
   styleUrls: ['./quizz.component.scss']
 })
 export class QuizzComponent implements OnInit, OnDestroy {
-  public loading = true;
+  public loading$: Observable<any>;
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  public question: any;
-
   public form: FormGroup = new FormGroup<any>({});
-  public value: any;
-  public values: any[] = [];
-  public quizz: any;
-  public bestScore: any = '0';
-  public history: any[] = [];
-  public isNewBestScore = false;
+  public question$: Observable<IQuestion>;
+  public answerEnum = AnswerEnum;
+  private question: IQuestion | undefined;
+  private current$: Observable<number>;
+  private total$: Observable<any>;
+  private value: string = '';
+  private values: string[] = [];
 
   get choices(): FormArray {
     return this.form?.get("choices") as FormArray
   }
 
-  constructor(private store: Store<IAppState>,
-              private fb: FormBuilder,
-              private quizzService: QuizzService) {
+  constructor(private router: Router, private store: Store<IAppState>, private fb: FormBuilder) {
+    this.loading$ = this.store.pipe(select(getLoading()));
+    this.question$ = this.store.pipe(select(getCurrentQuestion()))
+    this.current$ = this.store.pipe(select(getCurrent()))
+    this.total$ = this.store.pipe(select(numberQuestion()))
+
   }
 
   ngOnInit(): void {
-    this.store.select('global').pipe(takeUntil(this.destroy$)).subscribe(({quizz, bestScore, isNewBestScore}) => {
-      this.quizz = quizz;
-      this.isNewBestScore = isNewBestScore;
-      this.bestScore = bestScore;
-      if (quizz.start) {
-        this.question = quizz.questions[quizz.current];
+    combineLatest([
+      this.current$,
+      this.total$
+    ]).subscribe(([current, total]) => {
+      if (current > total) {
+        this.store.dispatch(QuizzActions.endQuizz())
+      }
+    })
+    this.question$.subscribe((data: IQuestion) => {
+      if (data) {
+        this.question = data;
         this.form = this.fb.group({
           text: this.fb.control(''),
           choices: this.fb.array([]),
         });
-
-        if (this.question.answerType === 'choice' || this.question.answerType === 'multiple-choice') {
-          for (const choice of this.question.choices) {
+        if (data.answerType === AnswerEnum.choice || data.answerType === AnswerEnum.multipleChoice) {
+          for (const choice of data.choices) {
             this.choices.push(this.addChoice(choice));
           }
         }
-        this.loading = false;
       }
-    })
+    });
   }
 
   addChoice(choice: string) {
@@ -62,38 +69,33 @@ export class QuizzComponent implements OnInit, OnDestroy {
   }
 
   validate() {
-    if (this.question.answerType === 'choice') {
-      const isRight = this.question.answer === this.value;
-      this.addToHistory(this.question.label, this.value, isRight);
-      if (isRight) {
-        this.store.dispatch(new AddScore())
-      }
-    } else if (this.question.answerType === 'text') {
-      const isRight = this.question.answer === this.form.value.text;
-      this.addToHistory(this.question.label, this.form.value.text, isRight);
-      if (isRight) {
-        this.store.dispatch(new AddScore())
-      }
-    } else if (this.question.answerType === 'multiple-choice') {
+    if (this.question?.answerType === AnswerEnum.choice) {
+      const valid = this.question?.answer === this.value;
+      return this.store.dispatch(QuizzActions.nextQuestion({
+        answer: {label: this.question?.label, valid}
+      }))
+    }
+    if (this.question?.answerType === AnswerEnum.text) {
+      const valid = this.question?.answer === this.form.value.text;
+      return this.store.dispatch(QuizzActions.nextQuestion({
+        answer: {label: this.question?.label, valid}
+      }))
+    }
+    if (this.question?.answerType === AnswerEnum.multipleChoice) {
       const wrongAnswer = this.values.filter((e) => {
-        return !this.question.answers.includes(e);
+        !this.question?.answers.includes(e);
       })
-      const isRight = wrongAnswer.length <= 0;
-      this.addToHistory(this.question.label, this.values, isRight);
-      if (isRight) {
-        this.store.dispatch(new AddScore())
-      }
+      const valid = wrongAnswer.length <= 0;
+      return this.store.dispatch(QuizzActions.nextQuestion({
+        answer: {label: this.question?.label, valid}
+      }))
     }
-    if (this.quizz.questions.length - 1 === this.quizz.current) {
-      this.store.dispatch(new EndQuizz(this.quizz.score))
-    } else {
-      this.store.dispatch(new NextQuestion())
-    }
+
 
   }
 
   public addToHistory(question: any, value: any, right: boolean) {
-    this.history.push({question, value, right})
+    // this.history.push({question, value, right})
   }
 
   ngOnDestroy(): void {
@@ -106,12 +108,11 @@ export class QuizzComponent implements OnInit, OnDestroy {
   };
 
   assign(choice: { value: { name: string } }) {
-    if (this.question.answerType === 'multiple-choice') {
+    if (this.question?.answerType === AnswerEnum.multipleChoice) {
       this.values.push(choice.value.name);
       return this.value;
     }
     this.value = choice.value.name
     return this.value;
-
   }
 }

@@ -1,8 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
-import {EndQuizz, StartQuizz} from "../../../../store/global/global.actions";
-import {Subject, takeUntil} from "rxjs";
+import {Observable, Subject, takeUntil} from "rxjs";
+import * as QuizzActions from "../../../../store/quizz/quizz.actions";
+import {getCurrent, getLoading, numberQuestion} from "../../../../store/quizz/quizz.selectors";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-layout',
@@ -11,31 +13,30 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  public timer = 0;
-  interval: any;
-  public quizz: any;
+  public loading$: Observable<any>;
+  public total$: Observable<any>;
+  public current$: Observable<any>;
 
-  constructor(private store: Store<IAppState>) {
+  public timer = 10;
+
+  private interval: any;
+
+  constructor(private router: Router,private store: Store<IAppState>) {
+    this.loading$ = this.store.pipe(select(getLoading()))
+    this.total$ = this.store.pipe(select(numberQuestion()))
+    this.current$ = this.store.pipe(select(getCurrent()))
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new StartQuizz());
-
-    this.store.select('global').pipe(takeUntil(this.destroy$)).subscribe(({quizz}) => {
-      this.quizz = quizz;
-
-      if (quizz.start) {
-        this.timer = quizz.timer;
-        this.interval = setInterval(() => {
-          this.timer--;
-          if (!this.timer) {
-            this.store.dispatch(new EndQuizz(quizz.score))
-            this.clear()
-            this.timer = 0;
-          }
-        }, 1000)
+    this.store.dispatch(QuizzActions.getQuizz());
+    this.interval = setInterval(() => {
+      if (this.timer < 1) {
+        this.store.dispatch(QuizzActions.endQuizz());
+        this.router.navigateByUrl('/results')
+        this.clear();
       }
-    })
+      this.timer--;
+    }, 1000)
   }
 
   clear() {

@@ -1,7 +1,9 @@
 <div class="home">
   <div class="card">
+    <span *ngIf="error$ | async as error">{{ error}}</span>
     <div class="label">NOM DU QUIZ</div>
     <h1 class="h1">Mon test technique</h1>
-    <app-button text="Demmarer" (clicked)="click()" [disabled]="loading"></app-button>
+    <app-button text="Demmarer" (clicked)="click()" [disabled]="loading$ | async"></app-button>
   </div>
+
 </div>

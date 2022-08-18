@@ -4,6 +4,10 @@ import {COMPONENTS} from "./components";
 import {SERVICES} from "./services";
 import {SharedModule} from "../shared/shared.module";
 import {HomeRouting} from "./routing/home.routing";
+import {StoreModule} from "@ngrx/store";
+import {homeReducer} from "../../store/home/home.reducer";
+import {EffectsModule} from "@ngrx/effects";
+import {HomeEffects} from "../../store/home/home.effects";
 
 
 
@@ -17,7 +21,9 @@ import {HomeRouting} from "./routing/home.routing";
   imports: [
     CommonModule,
     SharedModule,
-    HomeRouting
+    HomeRouting,
+    StoreModule.forFeature('home', homeReducer),
+    EffectsModule.forFeature([HomeEffects])
   ]
 })
 export class HomeModule { }

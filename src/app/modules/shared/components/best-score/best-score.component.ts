@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject, takeUntil} from "rxjs";
-import {Store} from "@ngrx/store";
+import {Observable, Subject, takeUntil} from "rxjs";
+import {select, Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
+import {getLoading, getScore} from "../../../../store/home/home.selectors";
 
 @Component({
   selector: 'app-best-score',
@@ -9,20 +10,16 @@ import {IAppState} from "../../../../store/reducer";
   styleUrls: ['./best-score.component.scss']
 })
 export class BestScoreComponent implements OnInit, OnDestroy {
-  public loading: boolean = true;
+  public loading$: Observable<any>;
   private destroy$: Subject<boolean> = new Subject<boolean>();
-  public score ='0';
+  public score$: Observable<number>;
 
   constructor(private store: Store<IAppState>) {
+    this.loading$ = this.store.pipe(select(getLoading()))
+    this.score$ = this.store.pipe(select(getScore()))
   }
 
   ngOnInit(): void {
-    this.store.select('global').pipe(takeUntil(this.destroy$)).subscribe(({bestScore}) => {
-      this.score = bestScore
-      setTimeout(() => {
-        this.loading = false;
-      }, 300)
-    })
   }
 
   ngOnDestroy(): void {

@@ -1,12 +1,17 @@
-<div class="header" [class.default-height]="quizz?.state === 'RESULTS'">
-  <div class="question">
-    <div class="info" *ngIf="quizz?.state ==='START'">
-      <span class="h2-semibold">Question {{ quizz.current + 1}}/{{ quizz.total}}</span>
-    </div>
-    <div class="info" *ngIf="quizz?.state ==='START'">
-      <span class="timer">{{timer}}</span>
-    </div>
+<div class="header">
+  <div *ngIf="loading$ | async; else data">
+    <app-loader></app-loader>
   </div>
+  <ng-template #data>
+    <div class="question">
+      <div class="info">
+        <span class="h2-semibold">Question {{ current$ | async}}/{{total$ | async}}</span>
+      </div>
+      <div class="info">
+        <span class="timer">{{timer}}</span>
+      </div>
+    </div>
+  </ng-template>
 </div>
 <div class="quizz-wrapper">
   <router-outlet></router-outlet>
