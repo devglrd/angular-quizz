@@ -91,12 +91,6 @@ export class QuizzComponent implements OnInit, OnDestroy {
         answer: {label: this.question?.label, valid}
       }))
     }
-
-
-  }
-
-  public addToHistory(question: any, value: any, right: boolean) {
-    // this.history.push({question, value, right})
   }
 
   ngOnDestroy(): void {
