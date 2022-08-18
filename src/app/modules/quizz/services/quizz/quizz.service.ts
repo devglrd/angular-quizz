@@ -4,12 +4,12 @@ import {Observable, of} from "rxjs";
 import {Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
 import * as QuizzActions from '../../../../store/quizz/quizz.actions'
+import {BEST_SCORE} from "../../../../store/quizz/type";
 @Injectable({
   providedIn: 'root'
 })
 export class QuizzService {
 
-  private BEST_SCORE = 'BEST_SCORE';
 
   constructor(private httpService: HttpClient, private store: Store<IAppState>) {
   }
@@ -19,10 +19,9 @@ export class QuizzService {
   }
 
   public isNewtBestScore(value: number): Observable<any> {
-    console.log(value);
-    const bestScore = localStorage.getItem(this.BEST_SCORE)
+    const bestScore = localStorage.getItem(BEST_SCORE)
     if (Number(bestScore) < value) {
-      localStorage.setItem(this.BEST_SCORE, value.toString());
+      localStorage.setItem(BEST_SCORE, value.toString());
       return of(this.store.dispatch(QuizzActions.newBestScore()))
     }
     return of(bestScore)

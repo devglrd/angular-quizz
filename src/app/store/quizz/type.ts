@@ -17,3 +17,5 @@ export enum AnswerEnum {
   text = 'text',
   multipleChoice = 'multiple-choice'
 }
+
+export const BEST_SCORE = 'BEST_SCORE'

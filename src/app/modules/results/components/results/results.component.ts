@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {select, Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
 import {getAnswers, getIsNewBestScore, getScore, numberQuestion} from "../../../../store/quizz/quizz.selectors";
-import {IAnswer} from "../../../../store/quizz/type";
+import {BEST_SCORE, IAnswer} from "../../../../store/quizz/type";
 
 @Component({
   selector: 'app-results',
@@ -26,7 +26,7 @@ export class ResultsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.bestScore = localStorage.getItem('BEST_SCORE') ?? '0'
+    this.bestScore = localStorage.getItem(BEST_SCORE) ?? '0'
     this.history$.subscribe((data) => {
       this.emptyQuizz = !data.length
     })
