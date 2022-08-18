@@ -17,7 +17,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public total$: Observable<any>;
   public current$: Observable<any>;
 
-  public timer = 10;
+  public timer = 120;
 
   private interval: any;
 

@@ -4,9 +4,9 @@ import {IAppState} from "../../../../store/reducer";
 import {combineLatest, Observable, Subject} from "rxjs";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {getCurrent, getCurrentQuestion, getLoading, numberQuestion} from "../../../../store/quizz/quizz.selectors";
-import {AnswerEnum, IQuestion} from "../../../../store/quizz/quizz.reducer";
 import * as QuizzActions from '../../../../store/quizz/quizz.actions'
 import {Router} from "@angular/router";
+import {AnswerEnum, IQuestion} from "../../../../store/quizz/type";
 
 @Component({
   selector: 'app-quizz',

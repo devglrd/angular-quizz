@@ -1,5 +1,6 @@
 import {createReducer, on} from "@ngrx/store";
 import * as QuizzActions from './quizz.actions';
+import {IAnswer, IQuestion} from "./type";
 
 export const initialState: IState = {
   isLoading: false,
@@ -9,35 +10,6 @@ export const initialState: IState = {
   current: 0,
   error: null,
   score: 0,
-}
-
-export interface IState {
-  isLoading: boolean;
-  score: number;
-  questions: IQuestion[];
-  answers: any[];
-  newBestScore: boolean;
-  current: number;
-  error: string | null
-}
-
-export interface IQuestion {
-  label: string;
-  answer: string;
-  choices: string[];
-  answers: string[];
-  answerType: AnswerEnum;
-}
-
-export interface IAnswer {
-  label: string,
-  valid: boolean,
-}
-
-export enum AnswerEnum {
-  choice = 'choice',
-  text = 'text',
-  multipleChoice = 'multiple-choice'
 }
 
 export const quizzReducer = createReducer(initialState,
@@ -63,3 +35,14 @@ export const quizzReducer = createReducer(initialState,
     ...state, newBestScore: true
   }))
 )
+
+
+export interface IState {
+  isLoading: boolean;
+  score: number;
+  questions: IQuestion[];
+  answers: any[];
+  newBestScore: boolean;
+  current: number;
+  error: string | null
+}

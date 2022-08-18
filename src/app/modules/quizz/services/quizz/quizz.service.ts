@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable, of} from "rxjs";
-import {IQuestion} from "../../../../store/quizz/quizz.reducer";
 import {Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
 import * as QuizzActions from '../../../../store/quizz/quizz.actions'

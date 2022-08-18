@@ -3,7 +3,7 @@ import {Observable} from "rxjs";
 import {select, Store} from "@ngrx/store";
 import {IAppState} from "../../../../store/reducer";
 import {getAnswers, getIsNewBestScore, getScore, numberQuestion} from "../../../../store/quizz/quizz.selectors";
-import {IAnswer} from "../../../../store/quizz/quizz.reducer";
+import {IAnswer} from "../../../../store/quizz/type";
 
 @Component({
   selector: 'app-results',

@@ -3,12 +3,12 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {endQuizz, endQuizzCompleted, getQuizz, getQuizzCompleted} from "./quizz.actions";
 import {catchError, map, switchMap, withLatestFrom} from "rxjs/operators";
 import {QuizzService} from "../../modules/quizz/services";
-import {IQuestion} from "./quizz.reducer";
 import * as QuizzActions from './quizz.actions'
 import {Observable, of} from "rxjs";
 import {Store} from "@ngrx/store";
 import {IAppState} from "../reducer";
 import {getScore} from "./quizz.selectors";
+import {IQuestion} from "./type";
 
 @Injectable()
 export class QuizzEffects {

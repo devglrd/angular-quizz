@@ -1,5 +1,5 @@
 import {createAction, props} from "@ngrx/store";
-import {IAnswer, IQuestion} from "./quizz.reducer";
+import {IAnswer, IQuestion} from "./type";
 
 export const getQuizz = createAction('[Quizz] Get Quizz');
 export const getQuizzCompleted = createAction('[Quizz] Get Quizz Completed', props<{questions: IQuestion[]}>());
